@@ -181,7 +181,8 @@ GLA_LINKAGE void gla_print_program_info_log(GLuint program)
     GLchar *info_log = malloc(info_log_length);
     if (!info_log) {
         fprintf(stderr, "Error: Program (id = %d) info log printing: "
-                        "Unable to allocate memory for the info log\n", program);
+                        "Unable to allocate memory for the info log\n",
+                        program);
         return;
     }
     glGetProgramInfoLog(program, info_log_length, NULL, info_log);
