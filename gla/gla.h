@@ -30,9 +30,9 @@ extern "C" {
 #endif // __cplusplus
 
 #ifdef GLA_STATIC
-#define GLADEF static
+#define GLA_LINKAGE static
 #else
-#define GLADEF
+#define GLA_LINKAGE
 #endif // GLA_STATIC
 
 /**
@@ -44,7 +44,8 @@ extern "C" {
  * \return The program object.
  * \note The shader objects get detached after linking.
  */
-GLADEF GLuint gla_build_program(GLuint vertex_shader, GLuint fragment_shader);
+GLA_LINKAGE GLuint gla_build_program(GLuint vertex_shader,
+                                     GLuint fragment_shader);
 
 /**
  * \brief Creates and compiles a shader object.
@@ -53,14 +54,14 @@ GLADEF GLuint gla_build_program(GLuint vertex_shader, GLuint fragment_shader);
  * \param shader_type Specifies the type of shader to be build.
  * \return The shader object.
  */
-GLADEF GLuint gla_build_shader(const char *filename, GLenum shader_type);
+GLA_LINKAGE GLuint gla_build_shader(const char *filename, GLenum shader_type);
 
 /**
  * \brief Deletes a program object.
  * \param program Specifies the program object to be deleted.
  * \note This function is the counterpart to gla_build_program(GLuint, GLuint).
  */
-GLADEF void gla_delete_program(GLuint program);
+GLA_LINKAGE void gla_delete_program(GLuint program);
 
 /**
  * \brief Deletes a shader object.
@@ -68,21 +69,21 @@ GLADEF void gla_delete_program(GLuint program);
  * \note This function is the counterpart to
  *       gla_build_shader(const char *, GLenum).
  */
-GLADEF void gla_delete_shader(GLuint shader);
+GLA_LINKAGE void gla_delete_shader(GLuint shader);
 
 /**
  * \brief Prints the program object's information log to the standard output.
  * \param program Specifies the program object whose information log is to be
  *                printed.
  */
-GLADEF void gla_print_program_info_log(GLuint program);
+GLA_LINKAGE void gla_print_program_info_log(GLuint program);
 
 /**
  * \brief Prints the shader object's information log to the standard output.
  * \param shader Specifies the shader object whose information log is to be
  *               printed.
  */
-GLADEF void gla_print_shader_info_log(GLuint shader);
+GLA_LINKAGE void gla_print_shader_info_log(GLuint shader);
 
 /**
  * \brief Returns the status of the last link operation of a program object.
@@ -90,7 +91,7 @@ GLADEF void gla_print_shader_info_log(GLuint shader);
  * \return Returns \c GL_TRUE if the last link operation on \p program was
  *         successful, and \c GL_FALSE otherwise.
  */
-GLADEF GLint gla_program_link_success(GLuint program);
+GLA_LINKAGE GLint gla_program_link_success(GLuint program);
 
 /**
  * \brief Returns the status of the last validation operation of a program
@@ -99,7 +100,7 @@ GLADEF GLint gla_program_link_success(GLuint program);
  * \return Returns \c GL_TRUE if the last validation operation on \p program was
  *         successful, and \c GL_FALSE otherwise.
  */
-GLADEF GLint gla_program_validate_success(GLuint program);
+GLA_LINKAGE GLint gla_program_validate_success(GLuint program);
 
 /**
  * \brief Loads and returns the contents of a text file. 
@@ -107,7 +108,7 @@ GLADEF GLint gla_program_validate_success(GLuint program);
  * \return The file's contents.
  * \note The returned pointer must be deallocated. 
  */
-GLADEF GLchar *gla_read_text_file(const char *filename);
+GLA_LINKAGE GLchar *gla_read_text_file(const char *filename);
 
 /**
  * \brief Returns the status of the last compile operation of a shader object.
@@ -115,7 +116,7 @@ GLADEF GLchar *gla_read_text_file(const char *filename);
  * \return Returns \c GL_TRUE if the last compile operation on \p shader was
  *         successful, and \c GL_FALSE otherwise.
  */
-GLADEF GLint gla_shader_compile_success(GLuint shader);
+GLA_LINKAGE GLint gla_shader_compile_success(GLuint shader);
 
 #ifdef __cplusplus
 }
@@ -131,7 +132,8 @@ GLADEF GLint gla_shader_compile_success(GLuint shader);
 #include <string.h>
 
 // -----------------------------------------------------------------------------
-GLADEF GLuint gla_build_program(GLuint vertex_shader, GLuint fragment_shader)
+GLA_LINKAGE GLuint gla_build_program(GLuint vertex_shader,
+                                     GLuint fragment_shader)
 {
     GLuint program = glCreateProgram();
     glAttachShader(program, vertex_shader);
@@ -143,7 +145,7 @@ GLADEF GLuint gla_build_program(GLuint vertex_shader, GLuint fragment_shader)
 }
 
 // -----------------------------------------------------------------------------
-GLADEF GLuint gla_build_shader(const char *filename, GLenum shader_type)
+GLA_LINKAGE GLuint gla_build_shader(const char *filename, GLenum shader_type)
 {
     GLuint shader = glCreateShader(shader_type);
     GLchar *shader_source = gla_read_source_file(filename);
@@ -159,19 +161,19 @@ GLADEF GLuint gla_build_shader(const char *filename, GLenum shader_type)
 }
 
 // -----------------------------------------------------------------------------
-GLADEF void gla_delete_program(GLuint program)
+GLA_LINKAGE void gla_delete_program(GLuint program)
 {
     glDeleteProgram(program);
 }
 
 // -----------------------------------------------------------------------------
-GLADEF void gla_delete_shader(GLuint shader)
+GLA_LINKAGE void gla_delete_shader(GLuint shader)
 {
 	glDeleteShader(shader);
 }
 
 // -----------------------------------------------------------------------------
-GLADEF void gla_print_program_info_log(GLuint program)
+GLA_LINKAGE void gla_print_program_info_log(GLuint program)
 {
     GLint info_log_length = 0;
     glGetProgramiv(program, GL_INFO_LOG_LENGTH, &info_log_length);
@@ -188,7 +190,7 @@ GLADEF void gla_print_program_info_log(GLuint program)
 }
 
 // -----------------------------------------------------------------------------
-GLADEF void gla_print_shader_info_log(GLuint shader)
+GLA_LINKAGE void gla_print_shader_info_log(GLuint shader)
 {
     GLint info_log_length = 0;
     glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &info_log_length);
@@ -209,7 +211,7 @@ GLADEF void gla_print_shader_info_log(GLuint shader)
 }
 
 // -----------------------------------------------------------------------------
-GLADEF GLint gla_program_link_success(GLuint program)
+GLA_LINKAGE GLint gla_program_link_success(GLuint program)
 {
     GLint success = GL_FALSE;
 	glGetProgramiv(program, GL_LINK_STATUS, &success);
@@ -217,7 +219,7 @@ GLADEF GLint gla_program_link_success(GLuint program)
 }
 
 // -----------------------------------------------------------------------------
-GLADEF GLint gla_program_validate_success(GLuint program)
+GLA_LINKAGE GLint gla_program_validate_success(GLuint program)
 {
     GLint success = GL_FALSE;
 	glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
@@ -225,7 +227,7 @@ GLADEF GLint gla_program_validate_success(GLuint program)
 }
 
 // -----------------------------------------------------------------------------
-GLADEF GLchar *gla_read_text_file(const char *filename)
+GLA_LINKAGE GLchar *gla_read_text_file(const char *filename)
 {
     FILE *file = fopen(filename, "r");
     if (!file) {
@@ -290,7 +292,7 @@ GLADEF GLchar *gla_read_text_file(const char *filename)
 }
 
 // -----------------------------------------------------------------------------
-GLADEF GLint gla_shader_compile_success(GLuint shader)
+GLA_LINKAGE GLint gla_shader_compile_success(GLuint shader)
 {
 	GLint success = GL_FALSE;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
