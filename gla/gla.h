@@ -148,7 +148,7 @@ GLA_LINKAGE GLuint gla_build_program(GLuint vertex_shader,
 GLA_LINKAGE GLuint gla_build_shader(const char *filename, GLenum shader_type)
 {
     GLuint shader = glCreateShader(shader_type);
-    GLchar *shader_source = gla_read_source_file(filename);
+    GLchar *shader_source = gla_read_text_file(filename);
     if (!shader_source) {
         fprintf(stderr, "Error: Shader (\"%s\") building: "
                         "Unable to load source\n", filename);
