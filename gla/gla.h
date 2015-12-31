@@ -103,10 +103,10 @@ GLA_LINKAGE GLint gla_program_link_success(GLuint program);
 GLA_LINKAGE GLint gla_program_validate_success(GLuint program);
 
 /**
- * \brief Loads and returns the contents of a text file. 
+ * \brief Loads and returns the contents of a text file.
  * \param filename Specifies the name of the file to be read.
  * \return The file's contents.
- * \note The returned pointer must be deallocated. 
+ * \note The returned pointer must be deallocated.
  */
 GLA_LINKAGE GLchar *gla_read_text_file(const char *filename);
 
