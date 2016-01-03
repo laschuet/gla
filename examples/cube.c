@@ -178,17 +178,20 @@ int main(int argc, char **argv)
     glUseProgram(0);
 
     // Enter main loop
-    float rotation_angle = 0.0f;
+    float rotation_rad = 0.0f;
     double previous_time = glfwGetTime();
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         double current_time = glfwGetTime();
-        double elapsed_time = current_time - previous_time;
+        double elapsed_frame_time = current_time - previous_time;
         previous_time = current_time;
-        rotation_angle += sinf(elapsed_time);
-        model = mat4_rotate_y(rotation_angle * CGM_ONE_DEG_IN_RAD);
+        rotation_rad += elapsed_frame_time;
+        if (rotation_rad >= CGM_2_PI) {
+            rotation_rad = 0.0f;
+        }
+        model = mat4_rotate_y(rotation_rad);
         glUseProgram(cube_program);
         glUniformMatrix4fv(model_location, 1, GL_FALSE, model.m);
         glUseProgram(0);
