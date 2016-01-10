@@ -169,7 +169,7 @@ GLA_LINKAGE void gla_delete_program(GLuint program)
 // -----------------------------------------------------------------------------
 GLA_LINKAGE void gla_delete_shader(GLuint shader)
 {
-	glDeleteShader(shader);
+    glDeleteShader(shader);
 }
 
 // -----------------------------------------------------------------------------
@@ -215,16 +215,16 @@ GLA_LINKAGE void gla_print_shader_info_log(GLuint shader)
 GLA_LINKAGE GLint gla_program_link_success(GLuint program)
 {
     GLint success = GL_FALSE;
-	glGetProgramiv(program, GL_LINK_STATUS, &success);
-	return success;
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    return success;
 }
 
 // -----------------------------------------------------------------------------
 GLA_LINKAGE GLint gla_program_validate_success(GLuint program)
 {
     GLint success = GL_FALSE;
-	glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
-	return success;
+    glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
+    return success;
 }
 
 // -----------------------------------------------------------------------------
@@ -295,9 +295,9 @@ GLA_LINKAGE GLchar *gla_read_text_file(const char *filename)
 // -----------------------------------------------------------------------------
 GLA_LINKAGE GLint gla_shader_compile_success(GLuint shader)
 {
-	GLint success = GL_FALSE;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-	return success;
+    GLint success = GL_FALSE;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    return success;
 }
 
 #endif // GLA_IMPLEMENTATION
