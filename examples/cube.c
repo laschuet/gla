@@ -42,8 +42,14 @@ bool init(GLFWwindow **window,
 
 void key_cb(GLFWwindow *window, int key, int scancode, int action, int mods);
 
-void render(GLFWwindow *window, GLuint *vaos, GLuint *programs);
+void update(double elapsed_frame_time);
 
+void render(GLFWwindow *window);
+
+static GLuint cube_vao = 0;
+static GLuint cube_program = 0;
+static GLint model_location = -1;
+static float cube_y_rotation_rad = 0.0f;
 static bool do_render_wireframe = true;
 
 // -----------------------------------------------------------------------------
@@ -117,7 +123,7 @@ int main(int argc, char **argv)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     // Vertex array object
-    GLuint cube_vao = 0;
+    cube_vao = 0;
     glGenVertexArrays(1, &cube_vao);
     glBindVertexArray(cube_vao);
     glBindBuffer(GL_ARRAY_BUFFER, cube_vbo);
@@ -145,7 +151,7 @@ int main(int argc, char **argv)
 		return 1;
     }
 
-    GLuint cube_program = gla_build_program(vert_shader, 0, 0, 0, frag_shader);
+    cube_program = gla_build_program(vert_shader, 0, 0, 0, frag_shader);
 	if (!gla_program_link_success(cube_program)) {
 		gla_print_program_info_log(cube_program);
 		gla_delete_shader(vert_shader);
@@ -158,9 +164,6 @@ int main(int argc, char **argv)
     gla_delete_shader(vert_shader);
     gla_delete_shader(frag_shader);
 
-    GLuint vaos = {cube_vao};
-    GLuint programs = {cube_program};
-
     // Model, view and projection matrices
     vec3 camera_eye = vec3_3f(0.0f, 2.0f, 2.0f);
     vec3 camera_center = vec3_3f(0.0f, 0.0f, 0.0f);
@@ -168,9 +171,10 @@ int main(int argc, char **argv)
     mat4 model = mat4_identity();
     mat4 view = mat4_look_at(camera_eye, camera_center, camera_up);
     mat4 proj = mat4_perspective(65.0f, 1.25f, 0.1f, 100.0f);
-    GLint model_location = glGetUniformLocation(cube_program, "model");
+    model_location = glGetUniformLocation(cube_program, "model");
     GLint view_location = glGetUniformLocation(cube_program, "view");
     GLint proj_location = glGetUniformLocation(cube_program, "projection");
+
     glUseProgram(cube_program);
     glUniformMatrix4fv(model_location, 1, GL_FALSE, model.m);
     glUniformMatrix4fv(view_location, 1, GL_FALSE, view.m);
@@ -178,7 +182,6 @@ int main(int argc, char **argv)
     glUseProgram(0);
 
     // Enter main loop
-    float rotation_rad = 0.0f;
     double previous_time = glfwGetTime();
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -187,16 +190,8 @@ int main(int argc, char **argv)
         double current_time = glfwGetTime();
         double elapsed_frame_time = current_time - previous_time;
         previous_time = current_time;
-        rotation_rad += elapsed_frame_time;
-        if (rotation_rad >= CGM_2_PI) {
-            rotation_rad = 0.0f;
-        }
-        model = mat4_rotate_y(rotation_rad);
-        glUseProgram(cube_program);
-        glUniformMatrix4fv(model_location, 1, GL_FALSE, model.m);
-        glUseProgram(0);
-        render(window, &vaos, &programs);
-        glfwSwapBuffers(window);
+        update(elapsed_frame_time);
+        render(window);
     }
 
     // Clean up and terminate application
@@ -260,7 +255,20 @@ void key_cb(GLFWwindow *window, int key, int scancode, int action, int mods)
 }
 
 // -----------------------------------------------------------------------------
-void render(GLFWwindow *window, GLuint *vaos, GLuint *programs)
+void update(double elapsed_frame_time)
+{
+    cube_y_rotation_rad += elapsed_frame_time;
+    if (cube_y_rotation_rad >= CGM_2_PI) {
+        cube_y_rotation_rad = 0.0f;
+    }
+    mat4 model = mat4_rotate_y(cube_y_rotation_rad);
+    glUseProgram(cube_program);
+    glUniformMatrix4fv(model_location, 1, GL_FALSE, model.m);
+    glUseProgram(0);
+}
+
+// -----------------------------------------------------------------------------
+void render(GLFWwindow *window)
 {
     int framebuffer_width = 0;
 	int framebuffer_height = 0;
@@ -275,9 +283,10 @@ void render(GLFWwindow *window, GLuint *vaos, GLuint *programs)
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 
-    glUseProgram(programs[0]);
-    glBindVertexArray(vaos[0]);
+    glUseProgram(cube_program);
+    glBindVertexArray(cube_vao);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
     glBindVertexArray(0);
     glUseProgram(0);
+    glfwSwapBuffers(window);
 }
