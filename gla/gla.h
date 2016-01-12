@@ -39,12 +39,23 @@ extern "C" {
  * \brief Creates and links a program object given some shader objects.
  * \param vertex_shader Specifies the vertex shader object that gets attached to
  *                      the program object.
+ * \param tessellation_control_shader Specifies the tessellation control shader
+ *                                    object that gets attached to the program
+ *                                    object.
+ * \param tessellation_evaluation_shader Specifies the tessellation evaluation
+ *                                       shader object that gets attached to the
+ *                                       program object.
+ * \param geometry_shader Specifies the geometry shader object that gets
+ *                        attached to the program object.
  * \param fragment_shader Specifies the fragment shader object that gets
  *                        attached to the program object.
  * \return The program object.
  * \note The shader objects get detached after linking.
  */
 GLA_LINKAGE GLuint gla_build_program(GLuint vertex_shader,
+                                     GLuint tessellation_control_shader,
+                                     GLuint tessellation_evaluation_shader,
+                                     GLuint geometry_shader,
                                      GLuint fragment_shader);
 
 /**
@@ -133,14 +144,45 @@ GLA_LINKAGE GLint gla_shader_compile_success(GLuint shader);
 
 // -----------------------------------------------------------------------------
 GLA_LINKAGE GLuint gla_build_program(GLuint vertex_shader,
+                                     GLuint tessellation_control_shader,
+                                     GLuint tessellation_evaluation_shader,
+                                     GLuint geometry_shader,
                                      GLuint fragment_shader)
 {
+    if (!(vertex_shader && fragment_shader)) {
+        fprintf(stderr, "Error: Program building: "
+                        "Program must contain at least a vertex shader and a "
+                        "fragment shader\n");
+        return 0;
+    }
+
     GLuint program = glCreateProgram();
     glAttachShader(program, vertex_shader);
+    if (tessellation_control_shader) {
+        glAttachShader(program, tessellation_control_shader);
+    }
+    if (tessellation_evaluation_shader) {
+        glAttachShader(program, tessellation_evaluation_shader);
+    }
+    if (geometry_shader) {
+        glAttachShader(program, geometry_shader);
+    }
     glAttachShader(program, fragment_shader);
+
     glLinkProgram(program);
+
     glDetachShader(program, vertex_shader);
+    if (tessellation_control_shader) {
+        glDetachShader(program, tessellation_control_shader);
+    }
+    if (tessellation_evaluation_shader) {
+        glDetachShader(program, tessellation_evaluation_shader);
+    }
+    if (geometry_shader) {
+        glDetachShader(program, geometry_shader);
+    }
     glDetachShader(program, fragment_shader);
+
     return program;
 }
 
