@@ -231,12 +231,14 @@ GLA_LINKAGE GLuint gla_build_shader(const char *filename, GLenum shader_type)
 GLA_LINKAGE void gla_delete_program(GLuint program)
 {
     glDeleteProgram(program);
+    program = 0;
 }
 
 // -----------------------------------------------------------------------------
 GLA_LINKAGE void gla_delete_shader(GLuint shader)
 {
     glDeleteShader(shader);
+    shader = 0;
 }
 
 // -----------------------------------------------------------------------------
