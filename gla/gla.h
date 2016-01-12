@@ -59,6 +59,15 @@ GLA_LINKAGE GLuint gla_build_program(GLuint vertex_shader,
                                      GLuint fragment_shader);
 
 /**
+ * \brief Creates and links a program object given a compute shader object.
+ * \param compute_shader Specifies the compute shader object that gets attached
+ *                       to the program object.
+ * \return The program object.
+ * \note The compute shader object gets detached after linking.
+ */
+GLA_LINKAGE GLuint gla_build_compute_program(GLuint compute_shader);
+
+/**
  * \brief Creates and compiles a shader object.
  * \param filename Specifies the filename that holds the source code to be
  *                 compiled.
@@ -183,6 +192,22 @@ GLA_LINKAGE GLuint gla_build_program(GLuint vertex_shader,
     }
     glDetachShader(program, fragment_shader);
 
+    return program;
+}
+
+// -----------------------------------------------------------------------------
+GLA_LINKAGE GLuint gla_build_compute_program(GLuint compute_shader)
+{
+    if (!compute_shader) {
+        fprintf(stderr, "Error: Compute program building: "
+                        "Program must contain a compute shader\n");
+        return 0;
+    }
+
+    GLuint program = glCreateProgram();
+    glAttachShader(program, compute_shader);
+    glLinkProgram(program);
+    glDetachShader(program, compute_shader);
     return program;
 }
 
