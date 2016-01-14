@@ -140,29 +140,29 @@ int main(int argc, char **argv)
     // Create shaders and shader programs
     GLuint vert_shader = gla_build_shader("cube_vs.glsl", GL_VERTEX_SHADER);
     if (!gla_shader_compile_success(vert_shader)) {
-		gla_print_shader_info_log(vert_shader);
-		gla_delete_shader(vert_shader);
-		clean_up_glfw(window);
-		return 1;
+        gla_print_shader_info_log(vert_shader);
+        gla_delete_shader(vert_shader);
+        clean_up_glfw(window);
+        return 1;
     }
 
     GLuint frag_shader = gla_build_shader("cube_fs.glsl", GL_FRAGMENT_SHADER);
     if (!gla_shader_compile_success(frag_shader)) {
-		gla_print_shader_info_log(frag_shader);
-		gla_delete_shader(frag_shader);
-		clean_up_glfw(window);
-		return 1;
+        gla_print_shader_info_log(frag_shader);
+        gla_delete_shader(frag_shader);
+        clean_up_glfw(window);
+        return 1;
     }
 
     cube_program = gla_build_program(vert_shader, 0, 0, 0, frag_shader);
-	if (!gla_program_link_success(cube_program)) {
-		gla_print_program_info_log(cube_program);
-		gla_delete_shader(vert_shader);
-		gla_delete_shader(frag_shader);
-		gla_delete_program(cube_program);
-		clean_up_glfw(window);
-		return 1;
-	}
+    if (!gla_program_link_success(cube_program)) {
+        gla_print_program_info_log(cube_program);
+        gla_delete_shader(vert_shader);
+        gla_delete_shader(frag_shader);
+        gla_delete_program(cube_program);
+        clean_up_glfw(window);
+        return 1;
+    }
 
     gla_delete_shader(vert_shader);
     gla_delete_shader(frag_shader);
