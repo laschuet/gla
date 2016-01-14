@@ -35,6 +35,8 @@
 
 void clean_up_glfw(GLFWwindow *window);
 
+void framebuffer_size_cb(GLFWwindow *window, int width, int height);
+
 bool init(GLFWwindow **window,
           int window_width,
           int window_height,
@@ -65,6 +67,7 @@ int main(int argc, char **argv)
 
     // Set callbacks up
     glfwSetKeyCallback(window, key_cb);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_cb);
 
     // Set geometry up and transfer it to the graphics card
     // Indexed drawing
@@ -210,6 +213,12 @@ void clean_up_glfw(GLFWwindow *window)
 }
 
 // -----------------------------------------------------------------------------
+void framebuffer_size_cb(GLFWwindow *window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
+// -----------------------------------------------------------------------------
 bool init(GLFWwindow **window,
           int window_width,
           int window_height,
@@ -270,10 +279,6 @@ void update(double elapsed_frame_time)
 // -----------------------------------------------------------------------------
 void render(GLFWwindow *window)
 {
-    int framebuffer_width = 0;
-	int framebuffer_height = 0;
-	glfwGetFramebufferSize(window, &framebuffer_width, &framebuffer_height);
-    glViewport(0, 0, framebuffer_width, framebuffer_height);
     glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
