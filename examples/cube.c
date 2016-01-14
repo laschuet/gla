@@ -195,6 +195,7 @@ int main(int argc, char **argv)
         previous_time = current_time;
         update(elapsed_frame_time);
         render(window);
+        glfwSwapBuffers(window);
     }
 
     // Clean up and terminate application
@@ -293,5 +294,4 @@ void render(GLFWwindow *window)
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
     glBindVertexArray(0);
     glUseProgram(0);
-    glfwSwapBuffers(window);
 }
