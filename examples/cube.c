@@ -33,7 +33,7 @@
 #define CGM_IMPLEMENTATION
 #include <cgm/cgm.h>
 
-void clean_up(GLFWwindow *window);
+void clean_up_glfw(GLFWwindow *window);
 
 bool init(GLFWwindow **window,
           int window_width,
@@ -59,7 +59,7 @@ int main(int argc, char **argv)
     GLFWwindow *window = NULL;
     if (!init(&window, 1024, 768, "GLA -- Cube")) {
         fprintf(stderr, "Error: Unable to initialize the graphics system\n");
-        clean_up(window);
+        clean_up_glfw(window);
         return 1;
     }
 
@@ -139,7 +139,7 @@ int main(int argc, char **argv)
     if (!gla_shader_compile_success(vert_shader)) {
 		gla_print_shader_info_log(vert_shader);
 		gla_delete_shader(vert_shader);
-		clean_up(window);
+		clean_up_glfw(window);
 		return 1;
     }
 
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
     if (!gla_shader_compile_success(frag_shader)) {
 		gla_print_shader_info_log(frag_shader);
 		gla_delete_shader(frag_shader);
-		clean_up(window);
+		clean_up_glfw(window);
 		return 1;
     }
 
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
 		gla_delete_shader(vert_shader);
 		gla_delete_shader(frag_shader);
 		gla_delete_program(cube_program);
-		clean_up(window);
+		clean_up_glfw(window);
 		return 1;
 	}
 
@@ -196,12 +196,12 @@ int main(int argc, char **argv)
 
     // Clean up and terminate application
     gla_delete_program(cube_program);
-    clean_up(window);
+    clean_up_glfw(window);
     return 0;
 }
 
 // -----------------------------------------------------------------------------
-void clean_up(GLFWwindow *window)
+void clean_up_glfw(GLFWwindow *window)
 {
     if (window) {
         glfwDestroyWindow(window);
