@@ -59,6 +59,28 @@ GLA_LINKAGE GLuint gla_build_program(GLuint vertex_shader,
                                      GLuint fragment_shader);
 
 /**
+ * \brief Creates and links a program object given the names of the shader
+ *        files that contain the source code to be used.
+ * \param vert_filename Specifies the name of the file containing the vertex
+ *                      shader source code.
+ * \param tess_ctrl_filename Specifies the name of the file containing the
+ *                           tessellation control shader source code.
+ * \param tess_eval_filename Specifies the name of the file containing the
+ *                           tessellation evaluation shader source code.
+ * \param geom_filename Specifies the name of the file containing the geometry
+ *                      shader source code.
+ * \param frag_filename Specifies the name of the file containing the fragment
+ *                      shader source code.
+ * \return The program object.
+ * \note The internally build shader objects get detached after linking.
+ */
+GLA_LINKAGE GLuint gla_build_program_from_file(const GLchar *vert_filename,
+                                               const GLchar *tess_ctrl_filename,
+                                               const GLchar *tess_eval_filename,
+                                               const GLchar *geom_filename,
+                                               const GLchar *frag_filename);
+
+/**
  * \brief Creates and links a program object given a compute shader object.
  * \param compute_shader Specifies the compute shader object that gets attached
  *                       to the program object.
@@ -193,6 +215,39 @@ GLA_LINKAGE GLuint gla_build_program(GLuint vertex_shader,
     glDetachShader(program, fragment_shader);
 
     return program;
+}
+
+// -----------------------------------------------------------------------------
+GLA_LINKAGE GLuint gla_build_program_from_file(const GLchar *vert_filename,
+                                               const GLchar *tess_ctrl_filename,
+                                               const GLchar *tess_eval_filename,
+                                               const GLchar *geom_filename,
+                                               const GLchar *frag_filename)
+{
+    GLuint vert = 0;
+    GLuint tess_ctrl = 0;
+    GLuint tess_eval = 0;
+    GLuint geom = 0;
+    GLuint frag = 0;
+
+    if (vert_filename) {
+        vert = gla_build_shader(vert_filename, GL_VERTEX_SHADER);
+    }
+    if (tess_ctrl_filename) {
+        tess_ctrl = gla_build_shader(tess_ctrl_filename,
+                                     GL_TESS_CONTROL_SHADER);
+    }
+    if (tess_eval_filename) {
+        tess_eval = gla_build_shader(tess_eval_filename,
+                                     GL_TESS_EVALUATION_SHADER);
+    }
+    if (geom_filename) {
+        geom = gla_build_shader(geom_filename, GL_GEOMETRY_SHADER);
+    }
+    if (frag_filename) {
+        frag = gla_build_shader(frag_filename, GL_FRAGMENT_SHADER);
+    }
+    return gla_build_program(vert, tess_ctrl, tess_eval, geom, frag);
 }
 
 // -----------------------------------------------------------------------------
