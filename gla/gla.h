@@ -90,6 +90,16 @@ GLA_LINKAGE GLuint gla_build_program_from_file(const GLchar *vert_filename,
 GLA_LINKAGE GLuint gla_build_compute_program(GLuint compute_shader);
 
 /**
+ * \brief Creates and links a program object given the name of the shader file
+ *        that contains the source code to be used.
+ * \param filename Specifies the name of the file containing the compute shader
+ *                 source code.
+ * \return The program object.
+ * \note The internally built compute shader object gets detached after linking.
+ */
+GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename);
+
+/**
  * \brief Creates and compiles a shader object.
  * \param filename Specifies the filename that holds the source code to be
  *                 compiled.
@@ -264,6 +274,16 @@ GLA_LINKAGE GLuint gla_build_compute_program(GLuint compute_shader)
     glLinkProgram(program);
     glDetachShader(program, compute_shader);
     return program;
+}
+
+// -----------------------------------------------------------------------------
+GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename)
+{
+    GLuint comp = 0;
+    if (filename) {
+        comp = gla_build_shader(filename, GL_COMPUTE_SHADER);
+    }
+    return gla_build_compute_program(comp);
 }
 
 // -----------------------------------------------------------------------------
