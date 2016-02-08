@@ -36,6 +36,25 @@ extern "C" {
 #endif // GLA_STATIC
 
 /**
+ * \brief Creates and links a program object given a compute shader object.
+ * \param compute_shader Specifies the compute shader object that gets attached
+ *                       to the program object.
+ * \return The program object.
+ * \note The compute shader object gets detached after linking.
+ */
+GLA_LINKAGE GLuint gla_build_compute_program(GLuint compute_shader);
+
+/**
+ * \brief Creates and links a program object given the name of the shader file
+ *        that contains the source code to be used.
+ * \param filename Specifies the name of the file containing the compute shader
+ *                 source code.
+ * \return The program object.
+ * \note The internally built compute shader object gets detached after linking.
+ */
+GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename);
+
+/**
  * \brief Creates and links a program object given some shader objects.
  * \param vertex_shader Specifies the vertex shader object that gets attached to
  *                      the program object.
@@ -79,25 +98,6 @@ GLA_LINKAGE GLuint gla_build_program_from_file(const GLchar *vert_filename,
                                                const GLchar *tess_eval_filename,
                                                const GLchar *geom_filename,
                                                const GLchar *frag_filename);
-
-/**
- * \brief Creates and links a program object given a compute shader object.
- * \param compute_shader Specifies the compute shader object that gets attached
- *                       to the program object.
- * \return The program object.
- * \note The compute shader object gets detached after linking.
- */
-GLA_LINKAGE GLuint gla_build_compute_program(GLuint compute_shader);
-
-/**
- * \brief Creates and links a program object given the name of the shader file
- *        that contains the source code to be used.
- * \param filename Specifies the name of the file containing the compute shader
- *                 source code.
- * \return The program object.
- * \note The internally built compute shader object gets detached after linking.
- */
-GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename);
 
 /**
  * \brief Creates and compiles a shader object given the source code to be used.
@@ -195,6 +195,32 @@ GLA_LINKAGE GLchar *gla_read_text_file(const GLchar *filename);
 #include <string.h>
 
 // -----------------------------------------------------------------------------
+GLA_LINKAGE GLuint gla_build_compute_program(GLuint compute_shader)
+{
+    if (!compute_shader) {
+        fprintf(stderr, "Error: Compute program building: "
+                        "Program must contain a compute shader\n");
+        return 0;
+    }
+
+    GLuint program = glCreateProgram();
+    glAttachShader(program, compute_shader);
+    glLinkProgram(program);
+    glDetachShader(program, compute_shader);
+    return program;
+}
+
+// -----------------------------------------------------------------------------
+GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename)
+{
+    GLuint comp = 0;
+    if (filename) {
+        comp = gla_build_shader_from_file(filename, GL_COMPUTE_SHADER);
+    }
+    return gla_build_compute_program(comp);
+}
+
+// -----------------------------------------------------------------------------
 GLA_LINKAGE GLuint gla_build_program(GLuint vertex_shader,
                                      GLuint tessellation_control_shader,
                                      GLuint tessellation_evaluation_shader,
@@ -269,32 +295,6 @@ GLA_LINKAGE GLuint gla_build_program_from_file(const GLchar *vert_filename,
         frag = gla_build_shader_from_file(frag_filename, GL_FRAGMENT_SHADER);
     }
     return gla_build_program(vert, tess_ctrl, tess_eval, geom, frag);
-}
-
-// -----------------------------------------------------------------------------
-GLA_LINKAGE GLuint gla_build_compute_program(GLuint compute_shader)
-{
-    if (!compute_shader) {
-        fprintf(stderr, "Error: Compute program building: "
-                        "Program must contain a compute shader\n");
-        return 0;
-    }
-
-    GLuint program = glCreateProgram();
-    glAttachShader(program, compute_shader);
-    glLinkProgram(program);
-    glDetachShader(program, compute_shader);
-    return program;
-}
-
-// -----------------------------------------------------------------------------
-GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename)
-{
-    GLuint comp = 0;
-    if (filename) {
-        comp = gla_build_shader_from_file(filename, GL_COMPUTE_SHADER);
-    }
-    return gla_build_compute_program(comp);
 }
 
 // -----------------------------------------------------------------------------
