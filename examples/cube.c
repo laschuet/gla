@@ -155,8 +155,7 @@ int main(int argc, char **argv)
     }
 
     cube_program = gla_build_program(vert_shader, 0, 0, 0, frag_shader);
-    if (!gla_program_link_success(cube_program)) {
-        gla_print_program_info_log(cube_program);
+    if (!gla_check_program_build(cube_program, GL_LINK_STATUS)) {
         gla_delete_shader(vert_shader);
         gla_delete_shader(frag_shader);
         gla_delete_program(cube_program);

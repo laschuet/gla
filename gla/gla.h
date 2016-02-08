@@ -119,6 +119,18 @@ GLA_LINKAGE GLuint gla_build_shader_from_file(const GLchar *filename,
                                               GLenum shader_type);
 
 /**
+ * \brief Checks the link or validation status of a program object, and prints
+ *        the program object info log to the standard output if an error
+ *        occurred.
+ * \param program Specifies the program object that gets checked.
+ * \param pname Specifies the object parameter. Accepted symbolic names are
+ *        \c GL_LINK_STATUS and \c GL_VALIDATE_STATUS.
+ * \return Returns \c GL_TRUE if the last link or validation operation on
+ *         \p program was successful, and \c GL_FALSE otherwise.
+ */
+GLA_LINKAGE GLint gla_check_program_build(GLuint program, GLenum pname);
+
+/**
  * \brief Checks the compile status of a shader object and prints the shader
  *        object info log to the standard output if an error occurred.
  * \param shader Specifies the shader object that gets checked.
@@ -160,23 +172,6 @@ GLA_LINKAGE void gla_print_program_info_log(GLuint program);
  *               printed.
  */
 GLA_LINKAGE void gla_print_shader_info_log(GLuint shader);
-
-/**
- * \brief Returns the status of the last link operation of a program object.
- * \param program Specifies the program object to be queried.
- * \return Returns \c GL_TRUE if the last link operation on \p program was
- *         successful, and \c GL_FALSE otherwise.
- */
-GLA_LINKAGE GLint gla_program_link_success(GLuint program);
-
-/**
- * \brief Returns the status of the last validation operation of a program
- *        object.
- * \param program Specifies the program object to be queried.
- * \return Returns \c GL_TRUE if the last validation operation on \p program was
- *         successful, and \c GL_FALSE otherwise.
- */
-GLA_LINKAGE GLint gla_program_validate_success(GLuint program);
 
 /**
  * \brief Loads and returns the contents of a text file.
@@ -328,6 +323,21 @@ GLA_LINKAGE GLuint gla_build_shader_from_file(const GLchar *filename,
 }
 
 // -----------------------------------------------------------------------------
+GLA_LINKAGE GLint gla_check_program_build(GLuint program, GLenum pname)
+{
+    if (pname != GL_LINK_STATUS || pname != GL_VALIDATE_STATUS) {
+        return GL_INVALID_ENUM;
+    }
+
+    GLint success = GL_FALSE;
+    glGetProgramiv(program, pname, &success);
+    if (!success) {
+        gla_print_program_info_log(program);
+    }
+    return success;
+}
+
+// -----------------------------------------------------------------------------
 GLA_LINKAGE GLint gla_check_shader_build(GLuint shader)
 {
     GLint success = GL_FALSE;
@@ -391,22 +401,6 @@ GLA_LINKAGE void gla_print_shader_info_log(GLuint shader)
     fprintf(stdout, "Shader (id = %d) info log: %s\n", shader, info_log);
     free(info_log);
     info_log = NULL;
-}
-
-// -----------------------------------------------------------------------------
-GLA_LINKAGE GLint gla_program_link_success(GLuint program)
-{
-    GLint success = GL_FALSE;
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
-    return success;
-}
-
-// -----------------------------------------------------------------------------
-GLA_LINKAGE GLint gla_program_validate_success(GLuint program)
-{
-    GLint success = GL_FALSE;
-    glGetProgramiv(program, GL_VALIDATE_STATUS, &success);
-    return success;
 }
 
 // -----------------------------------------------------------------------------
