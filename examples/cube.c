@@ -140,8 +140,7 @@ int main(int argc, char **argv)
     // Create shaders and shader programs
     GLuint vert_shader = gla_build_shader_from_file("cube_vs.glsl",
                                                     GL_VERTEX_SHADER);
-    if (!gla_shader_compile_success(vert_shader)) {
-        gla_print_shader_info_log(vert_shader);
+    if (!gla_check_shader_build(vert_shader)) {
         gla_delete_shader(vert_shader);
         clean_up_glfw(window);
         return 1;
@@ -149,8 +148,7 @@ int main(int argc, char **argv)
 
     GLuint frag_shader = gla_build_shader_from_file("cube_fs.glsl",
                                                     GL_FRAGMENT_SHADER);
-    if (!gla_shader_compile_success(frag_shader)) {
-        gla_print_shader_info_log(frag_shader);
+    if (!gla_check_shader_build(frag_shader)) {
         gla_delete_shader(frag_shader);
         clean_up_glfw(window);
         return 1;

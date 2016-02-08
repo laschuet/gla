@@ -119,6 +119,15 @@ GLA_LINKAGE GLuint gla_build_shader_from_file(const GLchar *filename,
                                               GLenum shader_type);
 
 /**
+ * \brief Checks the compile status of a shader object and prints the shader
+ *        object info log to the standard output if an error occurred.
+ * \param shader Specifies the shader object that gets checked.
+ * \return Returns \c GL_TRUE if the last compile operation on \p shader was
+ *         successful, and \c GL_FALSE otherwise.
+ */
+GLA_LINKAGE GLint gla_check_shader_build(GLuint shader);
+
+/**
  * \brief Deletes a program object.
  * \param program Specifies the program object to be deleted.
  * \note This function is the counterpart to
@@ -176,14 +185,6 @@ GLA_LINKAGE GLint gla_program_validate_success(GLuint program);
  * \note The returned pointer must be deallocated.
  */
 GLA_LINKAGE GLchar *gla_read_text_file(const GLchar *filename);
-
-/**
- * \brief Returns the status of the last compile operation of a shader object.
- * \param shader Specifies the shader object to be queried.
- * \return Returns \c GL_TRUE if the last compile operation on \p shader was
- *         successful, and \c GL_FALSE otherwise.
- */
-GLA_LINKAGE GLint gla_shader_compile_success(GLuint shader);
 
 #ifdef __cplusplus
 }
@@ -327,6 +328,17 @@ GLA_LINKAGE GLuint gla_build_shader_from_file(const GLchar *filename,
 }
 
 // -----------------------------------------------------------------------------
+GLA_LINKAGE GLint gla_check_shader_build(GLuint shader)
+{
+    GLint success = GL_FALSE;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        gla_print_shader_info_log(shader);
+    }
+    return success;
+}
+
+// -----------------------------------------------------------------------------
 GLA_LINKAGE void gla_delete_program(GLuint program)
 {
     glDeleteProgram(program);
@@ -464,14 +476,6 @@ GLA_LINKAGE GLchar *gla_read_text_file(const GLchar *filename)
     }
 
     return out;
-}
-
-// -----------------------------------------------------------------------------
-GLA_LINKAGE GLint gla_shader_compile_success(GLuint shader)
-{
-    GLint success = GL_FALSE;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    return success;
 }
 
 #endif // GLA_IMPLEMENTATION
