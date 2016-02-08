@@ -72,7 +72,7 @@ GLA_LINKAGE GLuint gla_build_program(GLuint vertex_shader,
  * \param frag_filename Specifies the name of the file containing the fragment
  *                      shader source code.
  * \return The program object.
- * \note The internally build shader objects get detached after linking.
+ * \note The internally built shader objects get detached after linking.
  */
 GLA_LINKAGE GLuint gla_build_program_from_file(const GLchar *vert_filename,
                                                const GLchar *tess_ctrl_filename,
