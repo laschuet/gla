@@ -100,13 +100,15 @@ GLA_LINKAGE GLuint gla_build_compute_program(GLuint compute_shader);
 GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename);
 
 /**
- * \brief Creates and compiles a shader object.
+ * \brief Creates and compiles a shader object given the name of the shader file
+ *        that contains the source code to be used.
  * \param filename Specifies the filename that holds the source code to be
  *                 compiled.
  * \param shader_type Specifies the type of shader to be build.
  * \return The shader object.
  */
-GLA_LINKAGE GLuint gla_build_shader(const GLchar *filename, GLenum shader_type);
+GLA_LINKAGE GLuint gla_build_shader_from_file(const GLchar *filename,
+                                              GLenum shader_type);
 
 /**
  * \brief Deletes a program object.
@@ -241,21 +243,21 @@ GLA_LINKAGE GLuint gla_build_program_from_file(const GLchar *vert_filename,
     GLuint frag = 0;
 
     if (vert_filename) {
-        vert = gla_build_shader(vert_filename, GL_VERTEX_SHADER);
+        vert = gla_build_shader_from_file(vert_filename, GL_VERTEX_SHADER);
     }
     if (tess_ctrl_filename) {
-        tess_ctrl = gla_build_shader(tess_ctrl_filename,
-                                     GL_TESS_CONTROL_SHADER);
+        tess_ctrl = gla_build_shader_from_file(tess_ctrl_filename,
+                                               GL_TESS_CONTROL_SHADER);
     }
     if (tess_eval_filename) {
-        tess_eval = gla_build_shader(tess_eval_filename,
-                                     GL_TESS_EVALUATION_SHADER);
+        tess_eval = gla_build_shader_from_file(tess_eval_filename,
+                                               GL_TESS_EVALUATION_SHADER);
     }
     if (geom_filename) {
-        geom = gla_build_shader(geom_filename, GL_GEOMETRY_SHADER);
+        geom = gla_build_shader_from_file(geom_filename, GL_GEOMETRY_SHADER);
     }
     if (frag_filename) {
-        frag = gla_build_shader(frag_filename, GL_FRAGMENT_SHADER);
+        frag = gla_build_shader_from_file(frag_filename, GL_FRAGMENT_SHADER);
     }
     return gla_build_program(vert, tess_ctrl, tess_eval, geom, frag);
 }
@@ -281,13 +283,14 @@ GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename)
 {
     GLuint comp = 0;
     if (filename) {
-        comp = gla_build_shader(filename, GL_COMPUTE_SHADER);
+        comp = gla_build_shader_from_file(filename, GL_COMPUTE_SHADER);
     }
     return gla_build_compute_program(comp);
 }
 
 // -----------------------------------------------------------------------------
-GLA_LINKAGE GLuint gla_build_shader(const GLchar *filename, GLenum shader_type)
+GLA_LINKAGE GLuint gla_build_shader_from_file(const GLchar *filename,
+                                              GLenum shader_type)
 {
     GLuint shader = glCreateShader(shader_type);
     GLchar *shader_source = gla_read_text_file(filename);
