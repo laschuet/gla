@@ -121,7 +121,11 @@ GLA_LINKAGE GLuint gla_build_shader_from_file(const GLchar *filename,
 /**
  * \brief Deletes a program object.
  * \param program Specifies the program object to be deleted.
- * \note This function is the counterpart to gla_build_program(GLuint, GLuint).
+ * \note This function is the counterpart to
+ *       gla_build_program(GLuint, GLuint) and
+ *       gla_build_program_from_file(const GLchar *, const GLchar *,
+ *                                   const GLchar *, const GLchar *,
+ *                                   const GLchar *).
  */
 GLA_LINKAGE void gla_delete_program(GLuint program);
 
