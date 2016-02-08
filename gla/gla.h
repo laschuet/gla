@@ -462,7 +462,7 @@ GLA_LINKAGE GLchar *gla_read_text_file(const GLchar *filename)
     buffer = NULL;
 
     if (fclose(file) == EOF) {
-		free(out);
+        free(out);
         out = NULL;
         fprintf(stderr, "Error: File (\"%s\") handling: "
                         "Unable to close file\n", filename);
