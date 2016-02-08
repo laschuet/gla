@@ -129,7 +129,8 @@ GLA_LINKAGE void gla_delete_program(GLuint program);
  * \brief Deletes a shader object.
  * \param shader Specifies the shader object to be deleted.
  * \note This function is the counterpart to
- *       gla_build_shader(const char *, GLenum).
+ *       gla_build_shader(const GLchar *, GLenum) and
+ *       gla_build_shader_from_file(const GLchar *, GLenum).
  */
 GLA_LINKAGE void gla_delete_shader(GLuint shader);
 
