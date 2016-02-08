@@ -352,6 +352,7 @@ GLA_LINKAGE void gla_print_program_info_log(GLuint program)
     glGetProgramInfoLog(program, info_log_length, NULL, info_log);
     fprintf(stdout, "Program (id = %d) info log: %s\n", program, info_log);
     free(info_log);
+    info_log = NULL;
 }
 
 // -----------------------------------------------------------------------------
@@ -373,6 +374,7 @@ GLA_LINKAGE void gla_print_shader_info_log(GLuint shader)
     glGetShaderInfoLog(shader, info_log_length, NULL, info_log);
     fprintf(stdout, "Shader (id = %d) info log: %s\n", shader, info_log);
     free(info_log);
+    info_log = NULL;
 }
 
 // -----------------------------------------------------------------------------
@@ -414,6 +416,7 @@ GLA_LINKAGE GLchar *gla_read_text_file(const GLchar *filename)
     char *out = malloc(out_size + 1); // + '\0'
     if (!out) {
         free(buffer);
+        buffer = NULL;
         fprintf(stderr, "Error: File (\"%s\") handling: "
                         "Unable to allocate memory for the source buffer\n",
                         filename);
@@ -429,6 +432,7 @@ GLA_LINKAGE GLchar *gla_read_text_file(const GLchar *filename)
             out = realloc(out, out_size + 1); // + '\0'
             if (!out) {
                 free(buffer);
+                buffer = NULL;
                 fprintf(stderr, "Error: File (\"%s\") handling: "
                                 "Unable to re-allocate memory for the source "
                                 "buffer\n", filename);
@@ -445,9 +449,11 @@ GLA_LINKAGE GLchar *gla_read_text_file(const GLchar *filename)
 
     out[num_read_total] = '\0';
     free(buffer);
+    buffer = NULL;
 
     if (fclose(file) == EOF) {
 		free(out);
+        out = NULL;
         fprintf(stderr, "Error: File (\"%s\") handling: "
                         "Unable to close file\n", filename);
         return NULL;
