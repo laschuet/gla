@@ -106,7 +106,7 @@ GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename);
  * \param shader_type Specifies the type of shader to be build.
  * \return The shader object.
  */
-GLA_LINKAGE GLuint gla_build_shader(const char *filename, GLenum shader_type);
+GLA_LINKAGE GLuint gla_build_shader(const GLchar *filename, GLenum shader_type);
 
 /**
  * \brief Deletes a program object.
@@ -160,7 +160,7 @@ GLA_LINKAGE GLint gla_program_validate_success(GLuint program);
  * \return The file's contents.
  * \note The returned pointer must be deallocated.
  */
-GLA_LINKAGE GLchar *gla_read_text_file(const char *filename);
+GLA_LINKAGE GLchar *gla_read_text_file(const GLchar *filename);
 
 /**
  * \brief Returns the status of the last compile operation of a shader object.
@@ -287,7 +287,7 @@ GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename)
 }
 
 // -----------------------------------------------------------------------------
-GLA_LINKAGE GLuint gla_build_shader(const char *filename, GLenum shader_type)
+GLA_LINKAGE GLuint gla_build_shader(const GLchar *filename, GLenum shader_type)
 {
     GLuint shader = glCreateShader(shader_type);
     GLchar *shader_source = gla_read_text_file(filename);
@@ -372,7 +372,7 @@ GLA_LINKAGE GLint gla_program_validate_success(GLuint program)
 }
 
 // -----------------------------------------------------------------------------
-GLA_LINKAGE GLchar *gla_read_text_file(const char *filename)
+GLA_LINKAGE GLchar *gla_read_text_file(const GLchar *filename)
 {
     FILE *file = fopen(filename, "r");
     if (!file) {
