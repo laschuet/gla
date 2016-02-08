@@ -100,6 +100,14 @@ GLA_LINKAGE GLuint gla_build_compute_program(GLuint compute_shader);
 GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename);
 
 /**
+ * \brief Creates and compiles a shader object given the source code to be used.
+ * \param source Specifies the source code to be compiled.
+ * \param shader_type Specifies the type of shader to be build.
+ * \return The shader object.
+ */
+GLA_LINKAGE GLuint gla_build_shader(const GLchar *source, GLenum shader_type);
+
+/**
  * \brief Creates and compiles a shader object given the name of the shader file
  *        that contains the source code to be used.
  * \param filename Specifies the filename that holds the source code to be
@@ -289,19 +297,27 @@ GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename)
 }
 
 // -----------------------------------------------------------------------------
+GLA_LINKAGE GLuint gla_build_shader(const GLchar *source, GLenum shader_type)
+{
+    GLuint shader = glCreateShader(shader_type);
+    glShaderSource(shader, 1, (const GLchar**) &source, NULL);
+    glCompileShader(shader);
+    return shader;
+}
+
+// -----------------------------------------------------------------------------
 GLA_LINKAGE GLuint gla_build_shader_from_file(const GLchar *filename,
                                               GLenum shader_type)
 {
-    GLuint shader = glCreateShader(shader_type);
     GLchar *shader_source = gla_read_text_file(filename);
     if (!shader_source) {
         fprintf(stderr, "Error: Shader (\"%s\") building: "
                         "Unable to load source\n", filename);
         return 0;
     }
-    glShaderSource(shader, 1, (const GLchar**) &shader_source, NULL);
+    GLuint shader = gla_build_shader(shader_source, shader_type);
     free(shader_source);
-    glCompileShader(shader);
+    shader_source = NULL;
     return shader;
 }
 
