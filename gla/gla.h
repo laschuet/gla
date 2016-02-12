@@ -300,35 +300,35 @@ GLA_LINKAGE GLuint gla_build_program_from_file(const GLchar *vert_filename,
     if (check_shaders) {
         GLboolean success = GL_TRUE;
 
-        if (!gla_check_shader_build(vert)) {
+        if (vert_filename && !gla_check_shader_build(vert)) {
             fprintf(stderr, "Error: Program building: "
                             "Shader (\"%s\") build error. "
                             "See shader info log\n", vert_filename);
             gla_delete_shader(vert);
             success = GL_FALSE;
         }
-        if (gla_check_shader_build(tess_ctrl)) {
+        if (tess_ctrl_filename && !gla_check_shader_build(tess_ctrl)) {
             fprintf(stderr, "Error: Program building: "
                             "Shader (\"%s\") build error. "
                             "See shader info log\n", tess_ctrl_filename);
             gla_delete_shader(tess_ctrl);
             success = GL_FALSE;
         }
-        if (gla_check_shader_build(tess_eval)) {
+        if (tess_eval_filename && !gla_check_shader_build(tess_eval)) {
             fprintf(stderr, "Error: Program building: "
                             "Shader (\"%s\") build error. "
                             "See shader info log\n", tess_eval_filename);
             gla_delete_shader(tess_eval);
             success = GL_FALSE;
         }
-        if (gla_check_shader_build(geom)) {
+        if (geom_filename && !gla_check_shader_build(geom)) {
             fprintf(stderr, "Error: Program building: "
                             "Shader (\"%s\") build error. "
                             "See shader info log\n", geom_filename);
             gla_delete_shader(geom);
             success = GL_FALSE;
         }
-        if (gla_check_shader_build(frag)) {
+        if (frag_filename && !gla_check_shader_build(frag)) {
             fprintf(stderr, "Error: Shader building: "
                             "Shader (\"%s\") build error. "
                             "See shader info log\n", frag_filename);
