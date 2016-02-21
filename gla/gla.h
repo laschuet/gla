@@ -49,10 +49,13 @@ GLA_LINKAGE GLuint gla_build_compute_program(GLuint compute_shader);
  *        that contains the source code to be used.
  * \param filename Specifies the name of the file containing the compute shader
  *                 source code.
+ * \param check_shader Specifies whether to check the internally built shader
+ *                     object for compile errors or not.
  * \return The program object.
  * \note The internally built compute shader object gets detached after linking.
  */
-GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename);
+GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename,
+                                                       GLboolean check_shader);
 
 /**
  * \brief Creates and links a program object given some shader objects.
@@ -90,6 +93,8 @@ GLA_LINKAGE GLuint gla_build_program(GLuint vertex_shader,
  *                      shader source code.
  * \param frag_filename Specifies the name of the file containing the fragment
  *                      shader source code.
+ * \param check_shaders Specifies whether to check the internally built shader
+ *                      objects for compile errors or not.
  * \return The program object.
  * \note The internally built shader objects get detached after linking.
  */
@@ -212,12 +217,24 @@ GLA_LINKAGE GLuint gla_build_compute_program(GLuint compute_shader)
 }
 
 // -----------------------------------------------------------------------------
-GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename)
+GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename,
+                                                       GLboolean check_shader)
 {
     GLuint comp = 0;
     if (filename) {
         comp = gla_build_shader_from_file(filename, GL_COMPUTE_SHADER);
     }
+
+    if (check_shader) {
+        if (filename && !gla_check_shader_build(comp)) {
+            fprintf(stderr, "Error: Program building: "
+                            "Shader (\"%s\") build error. "
+                            "See shader info log\n", filename);
+            gla_delete_shader(comp);
+            return 0;
+        }
+    }
+
     return gla_build_compute_program(comp);
 }
 
