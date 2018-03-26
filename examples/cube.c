@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -37,10 +36,8 @@ void clean_up_glfw(GLFWwindow *window);
 
 void framebuffer_size_cb(GLFWwindow *window, int width, int height);
 
-bool init(GLFWwindow **window,
-          int window_width,
-          int window_height,
-          const char *window_title);
+bool init(GLFWwindow **window, int window_width, int window_height,
+        const char *window_title);
 
 void key_cb(GLFWwindow *window, int key, int scancode, int action, int mods);
 
@@ -122,7 +119,7 @@ int main(int argc, char **argv)
     glGenBuffers(1, &cube_ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cube_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
-                 GL_STATIC_DRAW);
+                GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     // Vertex array object
@@ -138,16 +135,16 @@ int main(int argc, char **argv)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     // Create shaders and shader programs
-    GLuint vert_shader = gla_build_shader_from_file("cube_vs.glsl",
-                                                    GL_VERTEX_SHADER);
+    GLuint vert_shader =
+        gla_build_shader_from_file("cube_vs.glsl", GL_VERTEX_SHADER);
     if (!gla_check_shader_build(vert_shader)) {
         gla_delete_shader(vert_shader);
         clean_up_glfw(window);
         return 1;
     }
 
-    GLuint frag_shader = gla_build_shader_from_file("cube_fs.glsl",
-                                                    GL_FRAGMENT_SHADER);
+    GLuint frag_shader =
+        gla_build_shader_from_file("cube_fs.glsl", GL_FRAGMENT_SHADER);
     if (!gla_check_shader_build(frag_shader)) {
         gla_delete_shader(frag_shader);
         clean_up_glfw(window);
@@ -219,18 +216,16 @@ void framebuffer_size_cb(GLFWwindow *window, int width, int height)
 }
 
 // -----------------------------------------------------------------------------
-bool init(GLFWwindow **window,
-          int window_width,
-          int window_height,
-          const char *window_title)
+bool init(GLFWwindow **window, int window_width, int window_height,
+        const char *window_title)
 {
     if (!glfwInit()) {
         fprintf(stderr, "Error: Unable to initialize GLFW\n");
         return false;
     }
 
-    *window = glfwCreateWindow(window_width, window_height, window_title, NULL,
-                               NULL);
+    *window =
+        glfwCreateWindow(window_width, window_height, window_title, NULL, NULL);
     if (!window) {
         fprintf(stderr, "Error: Unable to create window\n");
         return false;
