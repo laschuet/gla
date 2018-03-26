@@ -35,38 +35,38 @@ extern "C" {
 #endif // GLA_STATIC
 
 /**
- * \brief Creates and links a program object given a compute shader object.
+ * \brief Create and link a program object given a compute shader object.
  * \param compute_shader Specifies the compute shader object that gets attached
- *                       to the program object.
+ *                      to the program object.
  * \return The program object.
  * \note The compute shader object gets detached after linking.
  */
 GLA_LINKAGE GLuint gla_build_compute_program(GLuint compute_shader);
 
 /**
- * \brief Creates and links a program object given the name of the shader file
- *        that contains the source code to be used.
+ * \brief Create and link a program object given the name of the shader file
+ *      that contains the source code to be used.
  * \param filename Specifies the name of the file containing the compute shader
- *                 source code.
+ *              source code.
  * \return The program object.
  * \note The internally built compute shader object gets detached after linking.
  */
 GLA_LINKAGE GLuint gla_build_compute_program_from_file(const GLchar *filename);
 
 /**
- * \brief Creates and links a program object given some shader objects.
+ * \brief Create and link a program object given some shader objects.
  * \param vertex_shader Specifies the vertex shader object that gets attached to
  *                      the program object.
  * \param tessellation_control_shader Specifies the tessellation control shader
- *                                    object that gets attached to the program
- *                                    object.
+ *                                  object that gets attached to the program
+ *                                  object.
  * \param tessellation_evaluation_shader Specifies the tessellation evaluation
- *                                       shader object that gets attached to the
- *                                       program object.
+ *                                      shader object that gets attached to the
+ *                                      program object.
  * \param geometry_shader Specifies the geometry shader object that gets
- *                        attached to the program object.
+ *                      attached to the program object.
  * \param fragment_shader Specifies the fragment shader object that gets
- *                        attached to the program object.
+ *                      attached to the program object.
  * \return The program object.
  * \note The shader objects get detached after linking.
  */
@@ -77,14 +77,14 @@ GLA_LINKAGE GLuint gla_build_program(GLuint vertex_shader,
                                     GLuint fragment_shader);
 
 /**
- * \brief Creates and links a program object given the names of the shader
- *        files that contain the source code to be used.
+ * \brief Create and link a program object given the names of the shader files
+ *      that contain the source code to be used.
  * \param vert_filename Specifies the name of the file containing the vertex
  *                      shader source code.
  * \param tess_ctrl_filename Specifies the name of the file containing the
- *                           tessellation control shader source code.
+ *                          tessellation control shader source code.
  * \param tess_eval_filename Specifies the name of the file containing the
- *                           tessellation evaluation shader source code.
+ *                          tessellation evaluation shader source code.
  * \param geom_filename Specifies the name of the file containing the geometry
  *                      shader source code.
  * \param frag_filename Specifies the name of the file containing the fragment
@@ -99,7 +99,7 @@ GLA_LINKAGE GLuint gla_build_program_from_file(const GLchar *vert_filename,
                                             const GLchar *frag_filename);
 
 /**
- * \brief Creates and compiles a shader object given the source code to be used.
+ * \brief Create and compile a shader object given the source code to be used.
  * \param source Specifies the source code to be compiled.
  * \param shader_type Specifies the type of shader to be build.
  * \return The shader object.
@@ -107,10 +107,10 @@ GLA_LINKAGE GLuint gla_build_program_from_file(const GLchar *vert_filename,
 GLA_LINKAGE GLuint gla_build_shader(const GLchar *source, GLenum shader_type);
 
 /**
- * \brief Creates and compiles a shader object given the name of the shader file
+ * \brief Create and compile a shader object given the name of the shader file
  *        that contains the source code to be used.
  * \param filename Specifies the filename that holds the source code to be
- *                 compiled.
+ *              compiled.
  * \param shader_type Specifies the type of shader to be build.
  * \return The shader object.
  */
@@ -118,62 +118,62 @@ GLA_LINKAGE GLuint gla_build_shader_from_file(const GLchar *filename,
                                             GLenum shader_type);
 
 /**
- * \brief Checks the link or validation status of a program object, and prints
- *        the program object info log to the standard output if an error
- *        occurred.
+ * \brief Check the link or validation status of a program object, and print the
+ *      program object info log to the standard output if an error
+ *      occurred.
  * \param program Specifies the program object that gets checked.
  * \param pname Specifies the object parameter. Accepted symbolic names are
- *        \c GL_LINK_STATUS and \c GL_VALIDATE_STATUS.
+ *              \c GL_LINK_STATUS and \c GL_VALIDATE_STATUS.
  * \return Returns \c GL_TRUE if the last link or validation operation on
- *         \p program was successful, and \c GL_FALSE otherwise.
+ *      \p program was successful, and \c GL_FALSE otherwise.
  */
 GLA_LINKAGE GLint gla_check_program_build(GLuint program, GLenum pname);
 
 /**
- * \brief Checks the compile status of a shader object and prints the shader
- *        object info log to the standard output if an error occurred.
+ * \brief Check the compile status of a shader object and print the shader
+ *      object info log to the standard output if an error occurred.
  * \param shader Specifies the shader object that gets checked.
  * \return Returns \c GL_TRUE if the last compile operation on \p shader was
- *         successful, and \c GL_FALSE otherwise.
+ *      successful, and \c GL_FALSE otherwise.
  */
 GLA_LINKAGE GLint gla_check_shader_build(GLuint shader);
 
 /**
- * \brief Deletes a program object.
+ * \brief Delete a program object.
  * \param program Specifies the program object to be deleted.
  * \note This function is the counterpart to
- *       gla_build_program(GLuint, GLuint) and
- *       gla_build_program_from_file(const GLchar *, const GLchar *,
- *                                   const GLchar *, const GLchar *,
- *                                   const GLchar *).
+ *      gla_build_program(GLuint, GLuint) and
+ *      gla_build_program_from_file(const GLchar *, const GLchar *,
+ *                                  const GLchar *, const GLchar *,
+ *                                  const GLchar *).
  */
 GLA_LINKAGE void gla_delete_program(GLuint program);
 
 /**
- * \brief Deletes a shader object.
+ * \brief Delete a shader object.
  * \param shader Specifies the shader object to be deleted.
  * \note This function is the counterpart to
- *       gla_build_shader(const GLchar *, GLenum) and
- *       gla_build_shader_from_file(const GLchar *, GLenum).
+ *      gla_build_shader(const GLchar *, GLenum) and
+ *      gla_build_shader_from_file(const GLchar *, GLenum).
  */
 GLA_LINKAGE void gla_delete_shader(GLuint shader);
 
 /**
- * \brief Prints the program object's information log to the standard output.
+ * \brief Print the program object's information log to the standard output.
  * \param program Specifies the program object whose information log is to be
- *                printed.
+ *              printed.
  */
 GLA_LINKAGE void gla_print_program_info_log(GLuint program);
 
 /**
- * \brief Prints the shader object's information log to the standard output.
+ * \brief Print the shader object's information log to the standard output.
  * \param shader Specifies the shader object whose information log is to be
- *               printed.
+ *              printed.
  */
 GLA_LINKAGE void gla_print_shader_info_log(GLuint shader);
 
 /**
- * \brief Loads and returns the contents of a text file.
+ * \brief Load and return the contents of a text file.
  * \param filename Specifies the name of the file to be read.
  * \return The file's contents.
  * \note The returned pointer must be deallocated.
