@@ -49,8 +49,8 @@ void render(GLFWwindow *window);
 
 static GLuint cube_vao = 0;
 static GLuint cube_program = 0;
-static mat4 view = mat4_identity();
-static mat4 proj = mat4_identity();
+static mat4 view;
+static mat4 proj;
 static GLint mvp_location = -1;
 static float cube_y_rotation_rad = 0.0f;
 static bool do_render_wireframe = true;
