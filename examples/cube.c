@@ -34,6 +34,8 @@
 
 void clean_up_glfw(GLFWwindow *window);
 
+void error_callback(int error, const char *description);
+
 void framebuffer_size_cb(GLFWwindow *window, int width, int height);
 
 bool init(GLFWwindow **window, int window_width, int window_height,
@@ -54,6 +56,8 @@ static bool do_render_wireframe = true;
 // -----------------------------------------------------------------------------
 int main(int argc, char **argv)
 {
+    glfwSetErrorCallback(error_callback);
+
     // Initialize the graphics systems
     GLFWwindow *window = NULL;
     if (!init(&window, 1024, 768, "GLA -- Cube")) {
@@ -207,6 +211,12 @@ void clean_up_glfw(GLFWwindow *window)
         glfwDestroyWindow(window);
     }
     glfwTerminate();
+}
+
+// -----------------------------------------------------------------------------
+void error_callback(int error, const char *description)
+{
+    fprintf(stderr, "Error: %s (error code %d)\n", description, error);
 }
 
 // -----------------------------------------------------------------------------
