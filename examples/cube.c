@@ -49,7 +49,9 @@ void render(GLFWwindow *window);
 
 static GLuint cube_vao = 0;
 static GLuint cube_program = 0;
-static GLint model_location = -1;
+static mat4 view = mat4_identity();
+static mat4 proj = mat4_identity();
+static GLint mvp_location = -1;
 static float cube_y_rotation_rad = 0.0f;
 static bool do_render_wireframe = true;
 
@@ -172,16 +174,14 @@ int main(int argc, char **argv)
     vec3 camera_center = vec3_3f(0.0f, 0.0f, 0.0f);
     vec3 camera_up = vec3_3f(0.0f, 2.0f, -2.0f);
     mat4 model = mat4_identity();
-    mat4 view = mat4_look_at(camera_eye, camera_center, camera_up);
-    mat4 proj = mat4_perspective(65.0f, 1.25f, 0.1f, 100.0f);
-    model_location = glGetUniformLocation(cube_program, "model");
-    GLint view_location = glGetUniformLocation(cube_program, "view");
-    GLint proj_location = glGetUniformLocation(cube_program, "projection");
+    view = mat4_look_at(camera_eye, camera_center, camera_up);
+    proj = mat4_perspective(65.0f, 1.25f, 0.1f, 100.0f);
+    mat4 mv = mat4_mul_mat4(view, model);
+    mat4 mvp = mat4_mul_mat4(proj, mv);
+    mvp_location = glGetUniformLocation(cube_program, "mvp");
 
     glUseProgram(cube_program);
-    glUniformMatrix4fv(model_location, 1, GL_FALSE, model.m);
-    glUniformMatrix4fv(view_location, 1, GL_FALSE, view.m);
-    glUniformMatrix4fv(proj_location, 1, GL_FALSE, proj.m);
+    glUniformMatrix4fv(mvp_location, 1, GL_FALSE, mvp.m);
     glUseProgram(0);
 
     // Enter main loop
@@ -275,9 +275,13 @@ void update(double elapsed_frame_time)
     if (cube_y_rotation_rad >= CGM_2_PI) {
         cube_y_rotation_rad = 0.0f;
     }
+
     mat4 model = mat4_rotate_y(cube_y_rotation_rad);
+    mat4 mv = mat4_mul_mat4(view, model);
+    mat4 mvp = mat4_mul_mat4(proj, mv);
+
     glUseProgram(cube_program);
-    glUniformMatrix4fv(model_location, 1, GL_FALSE, model.m);
+    glUniformMatrix4fv(mvp_location, 1, GL_FALSE, mvp.m);
     glUseProgram(0);
 }
 
