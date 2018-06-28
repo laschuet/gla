@@ -28,7 +28,7 @@
 #include <GLFW/glfw3.h>
 
 #define GLA_IMPLEMENTATION
-#include <gla/gla.h>
+#include "../gla/gla.h"
 #define CGM_IMPLEMENTATION
 #include <cgm/cgm.h>
 
