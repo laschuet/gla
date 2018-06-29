@@ -830,7 +830,7 @@ CGM_LINKAGE mat4 mat4_mul_mat4(mat4 m1, mat4 m2)
         for (int row = 0; row < 4; row++) {
             float sum = 0.0f;
             for (int i = 0; i < 4; i++) {
-                sum += m1.m[i + 4 * col] * m2.m[row + 4 * i];
+                sum += m2.m[i + 4 * col] * m1.m[row + 4 * i];
             }
             r.m[r_entry_pos] = sum;
             r_entry_pos++;
