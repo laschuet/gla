@@ -34,7 +34,7 @@
 
 void clean_up_glfw(GLFWwindow *window);
 
-void error_callback(int error, const char *description);
+void error_cb(int error, const char *description);
 
 void framebuffer_size_cb(GLFWwindow *window, int width, int height);
 
@@ -58,7 +58,7 @@ static bool do_render_wireframe = true;
 // -----------------------------------------------------------------------------
 int main(int argc, char **argv)
 {
-    glfwSetErrorCallback(error_callback);
+    glfwSetErrorCallback(error_cb);
 
     // Initialize the graphics systems
     GLFWwindow *window = NULL;
@@ -214,7 +214,7 @@ void clean_up_glfw(GLFWwindow *window)
 }
 
 // -----------------------------------------------------------------------------
-void error_callback(int error, const char *description)
+void error_cb(int error, const char *description)
 {
     fprintf(stderr, "Error: %s (error code %d)\n", description, error);
 }
